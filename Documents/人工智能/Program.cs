@@ -34,7 +34,7 @@ namespace CDS002.IEnumerableWithGenericsDemo
             StreamReader sr;
             try
             {
-                sr = File.OpenText("E:\\6楼\\Codesupport\\tempFile.txt");
+                sr = File.OpenText("F:\\算法\\DataStructuresAlgorithm-master\\Codesupport\\tempFile.txt");
             }
             catch (FileNotFoundException)
             {
@@ -72,7 +72,7 @@ namespace CDS002.IEnumerableWithGenericsDemo
             try
             {
                 stringsFound =
-                      from line in new StreamReaderEnumerable(@"E:\6楼\Codesupport\tempFile.txt")
+                      from line in new StreamReaderEnumerable(@"F:\算法\DataStructuresAlgorithm-master\Codesupport\tempFile.txt")
                       where line.Contains(keyString)
                       select line;
                 int count = 0;//循环行数
@@ -98,53 +98,44 @@ namespace CDS002.IEnumerableWithGenericsDemo
                         //计算keyString13个字符里是否有keyString后输出keyString后面的字符
                         if (index == -1)
                             yy++;
-                        if (i == 0 && index != -1)
+                        if (index != -1)
                         {
-                            oo = index;
-                        }
-                        else if (index != -1)
-                        {
-                            bb = index - oo - 4;
-                            oo = index;
-                        }
-                        else if(index==-1&&i!=0)
-                        {
-                           bb= item.Count() - cc;
-
-                            if (yy == 1 && bb > 9)
+                            if (i == 0) { oo = index; }//第一位
+                            else//中间数
                             {
-                                Console.WriteLine(item.Substring(cc, 9) + "”；");
+                                bb = index - oo - 4;
+                                oo = index;
                             }
-                            else if(yy==1&&bb<9)
+                        }
+                        else
+                        {
+                            bb = item.Count() - cc;
+                            //去除多余，只取一次
+                            if (yy == 1)//最后位
                             {
-                                Console.WriteLine(item.Substring(cc, bb) + "”；");
+                                if (bb > 9)
+                                    Console.WriteLine(item.Substring(cc, 9) + "”；");
+                                else
+                                    Console.WriteLine(item.Substring(cc, bb) + "”；");
                             }
                             continue;
+                        }                      
+                        if (cc != 0)//为第一与中间查询的服务
+                        { 
+                          if(bb<9)
+                                Console.WriteLine(item.Substring(cc, bb) + "”；");
+                          else
+                            { Console.WriteLine(item.Substring(cc, 9) + "”；"); }
                         }
-
-                        if (bb < 9&&cc!=0)
-                            Console.WriteLine(item.Substring(cc, bb) + "”；");                  
-                        else if(cc!=0)
-                        { Console.WriteLine(item.Substring(cc, 9) + "”；"); }
 
                         //计算keyString的位置
                         if (cc < item.Count() && index != -1)
                         {
                             count2++;
-                            //if (gg < 13)
-                            //{
-                            //    string x = item.Substring(index, gg);
-                            //    Console.WriteLine("{0}.第{1}行,第{2}个字母开始:“{3}”；", count2, count1, index + 1, x);
-                            //    cc = index + gg;
-                            //}
-                            //else
-                            //{
-
-                                string x = item.Substring(index,4);
+                                string x = item.Substring(index,keyString.Length);
                                 Console.Write("{0}.第{1}行,第{2}个字母开始:“{3}", count2, count1,index + 1 ,x); 
                                 
-                                cc = index + 4;
-                            //}
+                                cc = index + keyString.Length;
                         }
                     }
 
