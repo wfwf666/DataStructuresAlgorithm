@@ -52,22 +52,17 @@ namespace 洗扑克牌
                     color = cardColor[colorIndex]
                 };
             }
-
-
-
-
-            Console.WriteLine("洗牌之前:");
-            ShowCard(cardList);
-
-            ShuffleCard(cardList);
-
             Console.WriteLine("\n\n洗牌之后:");
-            ShowCard(cardList);
+            Card[] tt = ShuffleCard(cardList);
 
+            for (int i = 0; i < tt.Length; i++)
+            {
+                Console.Write(cardList[i].color + "" + cardList[i].value + " ");
+            }         
             Console.ReadLine();
         }
 
-        static void ShuffleCard(Card[] cardList)
+      public static Card[] ShuffleCard(Card[] cardList)
         {
             Random random = new Random();
             int tempIndex = 0;
@@ -79,17 +74,42 @@ namespace 洗扑克牌
                 cardList[tempIndex] = cardList[i];
                 cardList[i] = temp;
             }
+            return cardList;
         }
 
-        static void ShowCard(Card[] cardList)
-        {
-            for (int i = 0; i < cardList.Length; i++)
-            {
-                if (i % 13 == 0 && i != 0)
-                {
-                    Console.WriteLine("\n");
-                }
+        //static void ShowCard(Card[] cardList)
+        //{
+        //    for (int i = 0; i < cardList.Length; i++)
+        //    {
+        //        if (i % 13 == 0 && i != 0)
+        //        {
+        //            Console.WriteLine("\n");
+        //        }
 
+        //        Console.Write(cardList[i].color + "" + cardList[i].value + " ");
+        //    }
+
+        //}
+        static void ShowCards(Card[] cardList)
+        {
+            Card aa=null;          
+            for (int j = 0; j < cardList.Length - 1; j++)
+            {
+                for (int i = 0; i < cardList.Length - 1; i++)
+                {
+                    if (cardList[i].value > cardList[i + 1].value)
+                    {
+                        aa = cardList[i];
+                        cardList[i] = cardList[i + 1];
+                        cardList[i + 1] = aa;
+                       
+                    }
+
+                }
+            }
+            for (int i = 0; i < cardList.Length - 1; i++)
+            {
+                
                 Console.Write(cardList[i].color + "" + cardList[i].value + " ");
             }
         }
