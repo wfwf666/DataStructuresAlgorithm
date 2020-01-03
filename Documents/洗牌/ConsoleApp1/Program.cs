@@ -11,8 +11,16 @@ namespace 洗扑克牌
         static void Main(string[] args)
         {
 
-            string[] cardColor = { "黑桃", "方块", "梅花", "红桃" };
+            string[] cardColor = { "方块", "梅花", "红桃", "黑桃" };
+            int[] u = {
+                    44,48,0,4,8,12,16,20,24,28,32,36,40,
+                    45,49,1,5,9,13,17,21,25,29,33,37,41,
+                    46,50,2,6,10,14,18,22,26,30,34,38,42,
+                    47,51,3,7,11,15,19,23,27,31,35,39,43
+            };         
+          
             Card[] cardList = new Card[52];
+            Card[] cardLists = new Card[54];
             int colorIndex = 0;
             int tempValue = 0;
             for (int i = 0; i < cardList.Length; i++)
@@ -30,7 +38,7 @@ namespace 洗扑克牌
                         a = 'A';
                         break;
                     case 9:
-                        a = '0';
+                        a = '十';
                         break;
                     case 10:
                         a = 'J';
@@ -45,23 +53,91 @@ namespace 洗扑克牌
                         a = (Char)(tempValue + (int)'1');
                         break;
                 }
-
-                cardList[i] = new Card()
+                cardList[i] = new Card
                 {
                     value = a,
-                    color = cardColor[colorIndex]
+                    color = cardColor[colorIndex],
+                    xia = u[i]
                 };
             }
+
+            Console.WriteLine("\n\n洗牌之前:");
+            ShowCard(cardList);
             Console.WriteLine("\n\n洗牌之后:");
             Card[] tt = ShuffleCard(cardList);
-
+            Card[] one = new Card[13];
+            Card[] tow = new Card[13];
+            Card[] three = new Card[13];
+            Card[] four = new Card[13];
+            //Card[] glide= new Card[3];
             for (int i = 0; i < tt.Length; i++)
             {
-                Console.Write(cardList[i].color + "" + cardList[i].value + " ");
-            }         
+
+                if (i < 13)
+                {
+                    one[i] = new Card()
+                    {
+                        color = tt[i].color,
+                        value = tt[i].value,
+                        xia = tt[i].xia
+                    };
+
+                }
+                else if (i < 26)
+                {
+                    tow[i-13] = new Card()
+                    {
+                        color = tt[i].color,
+                        value = tt[i].value,
+                        xia = tt[i].xia
+                    };
+                }
+                else if (i < 39)
+                {
+                    three[i-26] = new Card()
+                    {
+                        color = tt[i].color,
+                        value = tt[i].value,
+                        xia = tt[i].xia
+                    };
+                }
+
+                else
+                {
+                    four[i - 39] = new Card()
+                    {
+                        color = tt[i].color,
+                        value = tt[i].value,
+                        xia = tt[i].xia 
+                    };
+                }
+            
+            }
+            ShuffleCard(cardList).CopyTo(cardLists,0);
+            Console.Write("one手上的牌是：");
+            ShowCard(one);
+            Console.Write("tow手上的牌是：");
+            ShowCard(tow);
+            Console.Write("three手上的牌是：");
+            ShowCard(three);
+            Console.Write("four手上的牌是：");
+            ShowCard(four);
+            Console.WriteLine("各自手上洗牌后：");
+            Console.Write("one手上的牌是：");
+            ShowCards(one);
+            Console.Write("tow手上的牌是：");
+            ShowCards(tow);
+            Console.Write("three手上的牌是：");
+            ShowCards(three);
+            Console.Write("four手上的牌是：");
+            ShowCards(four);
             Console.ReadLine();
         }
-
+        /// <summary>
+        /// 随机洗牌
+        /// </summary>
+        /// <param name="cardList"></param>
+        /// <returns></returns>
       public static Card[] ShuffleCard(Card[] cardList)
         {
             Random random = new Random();
@@ -74,52 +150,67 @@ namespace 洗扑克牌
                 cardList[tempIndex] = cardList[i];
                 cardList[i] = temp;
             }
+
             return cardList;
         }
+        /// <summary>
+        /// 显示数组元素
+        /// </summary>
+        /// <param name="cardList"></param>
+        static void ShowCard(Card[] cardList)
+        {
+            for (int i = 0; i < cardList.Length; i++)
+            {
+                
 
-        //static void ShowCard(Card[] cardList)
-        //{
-        //    for (int i = 0; i < cardList.Length; i++)
-        //    {
-        //        if (i % 13 == 0 && i != 0)
-        //        {
-        //            Console.WriteLine("\n");
-        //        }
+                Console.Write(cardList[i].color + "" + cardList[i].value + " "+cardList[i].xia+" ");
+                if (i % 12 == 0 && i != 0)
+                {
+                    Console.WriteLine("\n");
+                }
+            }
 
-        //        Console.Write(cardList[i].color + "" + cardList[i].value + " ");
-        //    }
-
-        //}
+        }
+        /// <summary>
+        /// 冒泡排序后显示
+        /// </summary>
+        /// <param name="cardList"></param>
         static void ShowCards(Card[] cardList)
         {
-            Card aa=null;          
-            for (int j = 0; j < cardList.Length - 1; j++)
+            Card aa = null;
+            
+            for (int j = 0; j < cardList.Length; j++)
             {
                 for (int i = 0; i < cardList.Length - 1; i++)
                 {
-                    if (cardList[i].value > cardList[i + 1].value)
+                    
+                    if (cardList[i].xia  > cardList[i + 1].xia )
                     {
                         aa = cardList[i];
                         cardList[i] = cardList[i + 1];
                         cardList[i + 1] = aa;
-                       
-                    }
+
+                    }                   
 
                 }
             }
-            for (int i = 0; i < cardList.Length - 1; i++)
+            for (int i = 0; i < cardList.Length; i++)//显示排序好的卡牌
             {
-                
+
                 Console.Write(cardList[i].color + "" + cardList[i].value + " ");
+
             }
+            Console.WriteLine();
         }
+
 
     }
 
     public class Card
     {
-        public char value;
-        public string color;
+        public char value;//卡牌点数
+        public string color;//卡牌花色
+        public int xia;//卡牌下标
     }
 
 
