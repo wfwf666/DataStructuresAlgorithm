@@ -12,25 +12,25 @@ namespace 洗扑克牌
         {
 
             string[] cardColor = { "方块", "梅花", "红桃", "黑桃" };
-            int[] u = {
+            int[] cardXia= {
                     44,48,0,4,8,12,16,20,24,28,32,36,40,
                     45,49,1,5,9,13,17,21,25,29,33,37,41,
                     46,50,2,6,10,14,18,22,26,30,34,38,42,
                     47,51,3,7,11,15,19,23,27,31,35,39,43
             };
-            string[] wang = { "大王", "小王" };
-            int[] w = { 52, 53 };
+            string[] cardWang = { "大王", "小王" };
+            int[] wangXia = { 52, 53 };
             var cardList = new List<Card>();
             int colorIndex = 0;
             int tempValue = 0;
-            for (int i = 0; i < u.Length; i++)
+            for (int i = 0; i < cardXia.Length; i++)//有点数牌
             {
-                if (i % 13 == 0 && i != 0)
+                if (i % 13 == 0 && i != 0)//判断花色牌数，达到13取下一个花色
                 {
                     colorIndex++;
                 }
 
-                Char a = 'A';
+                Char a;
                 tempValue = i % 13;
                 switch (tempValue)
                 {
@@ -53,88 +53,88 @@ namespace 洗扑克牌
                         a = (Char)(tempValue + (int)'1');
                         break;
                 }
-                Card vm = new Card
+                Card vm = new Card//初始化赋值卡牌属性
                 {
                     value = a,
                     color = cardColor[colorIndex],
-                    xia = u[i]
+                    xia = cardXia[i]
                 };
                 cardList.Add(vm);
             }
-            for (int i = 0; i < wang.Length; i++)  //王
+            for (int i = 0; i < cardWang.Length; i++)  //无点数牌====王
             {
                 Card vm = new Card
                 {
-                    color = wang[i],
-                    xia = w[i]
+                    color = cardWang[i],
+                    xia = wangXia[i]
                 };
                 cardList.Add(vm);
-            }
-            Console.WriteLine("\n\n洗牌之前:");
-            ShowCard(cardList);
-            Console.WriteLine("\n\n洗牌之后:");
-            List<Card> tt = ShuffleCard(cardList);
+            }           
+            List<Card> ShuffleCardEnd = ShuffleCard(cardList);
+            /////斗地主四人打牌51张分配，一次性发完个人的牌，留最后3张底牌
             List<Card> one = new List<Card>();
             List<Card> tow = new List<Card>();
             List<Card> three = new List<Card>();
             List<Card> four = new List<Card>();
             List<Card> glide = new List<Card>();
-            for (int i = 0; i < tt.Count; i++)
+            for (int i = 0; i < ShuffleCardEnd.Count; i++)
             {
 
                 if (i < 13)
                 {
-                    Card o = new Card()
+                    Card vm = new Card()
                     {
-                        color = tt[i].color,
-                        value = tt[i].value,
-                        xia = tt[i].xia
+                        color = ShuffleCardEnd[i].color,
+                        value = ShuffleCardEnd[i].value,
+                        xia = ShuffleCardEnd[i].xia
                     };
-                    one.Add(o);
+                    one.Add(vm);
                 }
                 else if (i < 26)
                 {
-                    Card o = new Card()
+                    Card vm = new Card()
                     {
-                        color = tt[i].color,
-                        value = tt[i].value,
-                        xia = tt[i].xia
+                        color = ShuffleCardEnd[i].color,
+                        value = ShuffleCardEnd[i].value,
+                        xia = ShuffleCardEnd[i].xia
                     };
-                    tow.Add(o);
+                    tow.Add(vm);
                 }
                 else if (i < 39)
                 {
-                    Card o = new Card()
+                    Card vm = new Card()
                     {
-                        color = tt[i].color,
-                        value = tt[i].value,
-                        xia = tt[i].xia
+                        color = ShuffleCardEnd[i].color,
+                        value = ShuffleCardEnd[i].value,
+                        xia = ShuffleCardEnd[i].xia
                     };
-                    three.Add(o);
+                    three.Add(vm);
                 }
 
                 else if (i < 51)
                 {
-                    Card o = new Card()
+                    Card vm = new Card()
                     {
-                        color = tt[i].color,
-                        value = tt[i].value,
-                        xia = tt[i].xia
+                        color = ShuffleCardEnd[i].color,
+                        value = ShuffleCardEnd[i].value,
+                        xia = ShuffleCardEnd[i].xia
                     };
-                    four.Add(o);
+                    four.Add(vm);
                 }
                 else
                 {
-                    Card o = new Card()
+                    Card vm = new Card()
                     {
-                        color = tt[i].color,
-                        value = tt[i].value,
-                        xia = tt[i].xia
+                        color = ShuffleCardEnd[i].color,
+                        value = ShuffleCardEnd[i].value,
+                        xia = ShuffleCardEnd[i].xia
                     };
-                    glide.Add(o);
+                    glide.Add(vm);
                 }
 
             }
+            //输出
+            Console.WriteLine("发牌每人得到：");
             Console.Write("one手上的牌是：");
             ShowCard(one);
             Console.Write("tow手上的牌是：");
@@ -144,10 +144,11 @@ namespace 洗扑克牌
             Console.Write("four手上的牌是：");
             ShowCard(four);
             Console.WriteLine();
-            Console.Write("glidedi底牌是：");
+            Console.WriteLine("===========================");
+            Console.Write("低牌是：");
             ShowCard(glide);
             Console.WriteLine();
-            Console.WriteLine("各自手上洗牌后：");
+            Console.WriteLine("各自手上排序后：");
             Console.Write("one手上的牌是：");
             ShowCards(one);
             Console.Write("tow手上的牌是：");
@@ -156,7 +157,6 @@ namespace 洗扑克牌
             ShowCards(three);
             Console.Write("four手上的牌是：");
             ShowCards(four);
-
             Console.ReadLine();
         }
         /// <summary>
@@ -226,7 +226,7 @@ namespace 洗扑克牌
                 Console.Write(cardList[i].color + "" + cardList[i].value + " ");
 
             }
-            Console.WriteLine();
+            Console.WriteLine("\n");
         }
 
 
