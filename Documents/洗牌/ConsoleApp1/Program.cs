@@ -10,7 +10,7 @@ namespace 洗扑克牌
     {
         static void Main(string[] args)
         {
-
+            
             string[] cardColor = { "方块", "梅花", "红桃", "黑桃" };
             int[] cardXia= {
                     44,48,0,4,8,12,16,20,24,28,32,36,40,
